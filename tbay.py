@@ -11,7 +11,9 @@ Base = declarative_base()
 
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, DateTime, Float
+from sqlalchemy import Column, Integer, String, DateTime, Float, ForeignKey
+from sqlalchemy.orm import relationship
+
 
 class Item(Base):
     __tablename__ = "items"
@@ -21,6 +23,10 @@ class Item(Base):
     description = Column(String)
     start_time = Column(DateTime, default=datetime.utcnow)
     
+    bids = relationship("Bid", backref="bids")
+    
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    
     
 class User(Base):
   __tablename__ = "users"
@@ -29,12 +35,18 @@ class User(Base):
   username = Column(String, nullable=False)
   password = Column(String, nullable=False)
   
+  items = relationship("Item", backref="seller")
+  bids = relationship("Bid", backref="bidder")
+  
 
 class Bid(Base):
   __tablename__ = "bids"
   
   id = Column(Integer, primary_key=True)
   price = Column(Float, nullable=False)
+  
+  user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+  item_id = Column(Integer, ForeignKey('items.id'), nullable=False)
   
 
 
