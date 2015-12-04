@@ -49,7 +49,27 @@ class Bid(Base):
   item_id = Column(Integer, ForeignKey('items.id'), nullable=False)
   
 
+"""
+# Users
+elsa = User(username="Elsa", password="1d1n4")
+anna = User(username="Anna", password="b3ll")
+kristoff = User(username="Kristoff", password="gr0ff")
 
+# Items
+olaf = Item(name="Olaf", description="snowman", user_id=1)
+sven = Item(name="Sven", description="reindeer", user_id=3)
+marshmallow = Item(name="Marshmallow", description="snow monster", user_id=2)
+baseball = Item(name="baseball", description="rawhide", user_id=3)
+
+# Bids
+bid1 = Bid(price=50.0, user_id=1, item_id=4)
+bid2 = Bid(price=67.0, user_id=2, item_id=4)
+
+
+
+
+
+"""
 
 
 Base.metadata.create_all(engine)
