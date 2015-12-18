@@ -10,7 +10,6 @@ Base = declarative_base()
 
 
 from datetime import datetime
-from sqlalchemy.sql.expression import func 
 from sqlalchemy import Column, Integer, String, DateTime, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -71,7 +70,7 @@ bid1 = Bid(price=50.0, user_id=elsa.id, item_id=baseball.id)
 bid2 = Bid(price=67.0, user_id=anna.id, item_id=baseball.id)
 bid3 = Bid(price=80.0, user_id=kristoff.id, item_id=baseball.id)
 bid4 = Bid(price=27.0, user_id=elsa.id, item_id=baseball.id)
-bid5 = Bid(price=101.0, user_id=anna.id, item_id=baseball.id)
+bid5 = Bid(price=100.0, user_id=anna.id, item_id=baseball.id)
 bid6 = Bid(price=99.0, user_id=kristoff.id, item_id=baseball.id)
 session.add_all([bid1, bid2, bid3, bid4, bid5, bid6])
 session.commit()
@@ -86,5 +85,15 @@ def GetMaxBidRecord(records):
         max_bid = record
   return max_bid
 
-max_bid = GetMaxBidRecord(session.query(Bid).all())
+
+max_bid = GetMaxBidRecord(session.query(Bid).filter(Bid.item==baseball))
 print(max_bid.bidder.username, max_bid.price)
+
+def price_from_record(record): 
+  return record.price
+  
+max_bid = session.query(Bid).filter(Bid.item==baseball).order_by(Bid.price.desc()).first()
+print(type(max_bid))
+print(max_bid.bidder.username, max_bid.price)
+
+
